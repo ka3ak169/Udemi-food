@@ -5,7 +5,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const openModalBtns = document.querySelectorAll('[data-open]');
   const closeModalBtn = document.querySelector('.modal__close');
   const modal = document.querySelector('.modal');
-  // console.log(modal);
+  // открывает модальное окно через 4 секунды
+  const timeoutModal = setTimeout(() => {openModal(modal)}, 4000);
 
   function hideTabContent() {
     tabsContent.forEach(item => {
@@ -146,7 +147,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   openModalBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      openModal(modal)
+      openModal(modal);
+      clearTimeout(timeoutModal);
     });
   });
   
@@ -166,6 +168,19 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // openModal();
+  function showModalByScroll() {
+    // console.log(window.scrollY);
+    // console.log(document.documentElement.clientHeight);
+    // console.log(document.documentElement.scrollHeight);
+    
+    if (window.scrollY + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+      openModal(modal);
+      clearTimeout(timeoutModal);
+      window.removeEventListener('scroll', showModalByScroll);
+    }
+  };
+
+  window.addEventListener('scroll', showModalByScroll);
+
   setTimer(finishTime);
 });
